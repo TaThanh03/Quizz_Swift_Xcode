@@ -47,6 +47,7 @@ class QuestionAndAnswer: NSObject {
 class ViewController: UIViewController {
     var myQandA = QuestionAndAnswer()
     var cpt : Int = 0
+    var cpt_answer : Int = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         displayQandA()
@@ -54,7 +55,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var outletQuestion: UITextView!
     @IBOutlet weak var outletSwitch: UISwitch!
     @IBOutlet weak var outletAnswer: UITextView!
-    
+    @IBOutlet weak var outletAnswerSeen: UILabel!
     func displayQandA() {
         if (myQandA.getQandA(target: cpt).0){ //hard question
             outletQuestion.textColor = UIColor.red
@@ -67,6 +68,7 @@ class ViewController: UIViewController {
         } else {
             outletAnswer.text = ""
         }
+        outletAnswerSeen.text = String(cpt_answer)
     }
     
     @IBAction func actionNext(_ sender: Any) {
@@ -95,12 +97,14 @@ class ViewController: UIViewController {
                 displayQandA()
             }
         }
-    
     }
     
     @IBAction func actionGetAnswer(_ sender: Any) {
-        myQandA.setQandA(target: cpt, val: true)
-        displayQandA()
+        if (!myQandA.getQandA(target: cpt).3){
+            myQandA.setQandA(target: cpt, val: true)
+            cpt_answer += 1
+            displayQandA()
+        }
     }
 }
 
